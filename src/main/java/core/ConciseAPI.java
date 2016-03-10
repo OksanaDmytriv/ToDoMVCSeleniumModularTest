@@ -3,17 +3,21 @@ package core;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
+import static core.CustomConditions.listElementWithText;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class ConciseAPI {
 
     private static WebDriver driver;
+
+    public static Actions actions = new Actions(driver);
 
     public static WebDriver getDriver() {
         return driver;
@@ -53,5 +57,16 @@ public class ConciseAPI {
 
     public static void open(String URL) {
         getDriver().get(URL);
+    }
+
+    public static WebElement $(List<WebElement> elements,
+                               String text, String innerElementCssSelector) {
+        WebElement element = assertThat(listElementWithText(elements, text));
+        return element.findElement(byCSS(innerElementCssSelector));
+    }
+
+    public static WebElement $(List<WebElement> elements, String text, By innerElementLocator) {
+        WebElement element = assertThat(listElementWithText(elements, text));
+        return element.findElement(innerElementLocator);
     }
 }
