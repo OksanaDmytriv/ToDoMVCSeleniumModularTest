@@ -46,7 +46,6 @@ public class Base {
         //doubleClick($(listElementWithText(tasks, oldText), "label"))жж
         //просто не даблкликается
         actions.doubleClick($(listElementWithText(tasks, oldText), "label")).perform();
-        findElementByCSS(".editing", ".edit").clear();
         findElementByCSS(".editing", ".edit").sendKeys(newText);
         return findElementByCSS(".editing", ".edit");
     }
