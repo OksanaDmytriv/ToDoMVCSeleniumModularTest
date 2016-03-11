@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-import static core.CustomConditions.listElementWithText;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
@@ -17,7 +16,7 @@ public class ConciseAPI {
 
     private static WebDriver driver;
 
-    public static Actions actions = new Actions(driver);
+    public static Actions actions;
 
     public static WebDriver getDriver() {
         return driver;
@@ -25,6 +24,7 @@ public class ConciseAPI {
 
     public static void setDriver(WebDriver driver) {
         ConciseAPI.driver = driver;
+        actions = new Actions(driver);
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition) {
@@ -59,14 +59,16 @@ public class ConciseAPI {
         getDriver().get(URL);
     }
 
-    public static WebElement $(List<WebElement> elements,
-                               String text, String innerElementCssSelector) {
-        WebElement element = assertThat(listElementWithText(elements, text));
-        return element.findElement(byCSS(innerElementCssSelector));
+    public static WebElement $(ExpectedCondition<WebElement> condition, By innerElementLocator) {
+        WebElement element = assertThat(condition);
+        return element.findElement(innerElementLocator);
     }
 
-    public static WebElement $(List<WebElement> elements, String text, By innerElementLocator) {
-        WebElement element = assertThat(listElementWithText(elements, text));
-        return element.findElement(innerElementLocator);
+    public static WebElement $(ExpectedCondition<WebElement> condition, String innerElementLocator) {
+        return $(condition, byCSS(innerElementLocator));
+    }
+
+    public static WebElement findElementByCSS (String cssSelector1, String cssSelector2){
+        return getDriver().findElement(byCSS(cssSelector1)).findElement(byCSS(cssSelector2));
     }
 }

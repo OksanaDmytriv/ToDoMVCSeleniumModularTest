@@ -6,9 +6,9 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static com.codeborne.selenide.Selenide.executeJavaScript;
 import static core.ConciseAPI.open;
 
 public class BaseTest {
@@ -24,7 +24,9 @@ public class BaseTest {
 
     @After
     public void clearData() {
-        executeJavaScript("localStorage.clear()");
+        if (ConciseAPI.getDriver() instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) ConciseAPI.getDriver()).executeScript("localStorage.clear()");
+        }
     }
 
     @BeforeClass

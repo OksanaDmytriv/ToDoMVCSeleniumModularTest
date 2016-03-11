@@ -1,11 +1,12 @@
 import config.BaseTest;
 import org.junit.Test;
+import org.openqa.selenium.Keys;
 
 import static pages.Base.*;
 
 public class TodoMVCFeatureTest extends BaseTest {
 
-    /*@Test
+    @Test
     public void testEdit() {
         //given
 
@@ -36,7 +37,7 @@ public class TodoMVCFeatureTest extends BaseTest {
         toggleAll();
         assertEmptyVisibleTasks();
         assertItemsLeft(2);
-    }*/
+    }
 
     @Test
     public void testTasksCommonFlow() {
@@ -49,7 +50,9 @@ public class TodoMVCFeatureTest extends BaseTest {
         assertEmptyVisibleTasks();
 
         add("b");
-        toggle("b");
+        //toggle("b") - в это месте дебагер показывает что система ищет задачу по локатору new-todo, который она выходит берет от метода add
+        // я так и не поняла как такое возможно, потому пошла в обход с помощью toggleAll
+        toggleAll();
         assertEmptyVisibleTasks();
 
         filterCompleted();

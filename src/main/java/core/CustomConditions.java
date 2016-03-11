@@ -16,7 +16,7 @@ public class CustomConditions {
 
     public static ExpectedCondition<Boolean> elementsIsHidden(final String cssSelector) {
         return new ExpectedCondition<Boolean>() {
-            WebElement element;
+            private WebElement element;
 
             public Boolean apply(WebDriver webDriver) {
                 element = $(byCSS(cssSelector));
@@ -40,11 +40,26 @@ public class CustomConditions {
         };
     }
 
-    public static ExpectedCondition<Boolean> listOfVisibleElementsIsEmpty(final List<WebElement> elements) {
+    public static ExpectedCondition<Boolean> listOfElementsIsEmpty(final By locator) {
         return new ExpectedCondition<Boolean>() {
-            List<WebElement> visibleElements;
+            private List<WebElement> elements;
 
             public Boolean apply(WebDriver webDriver) {
+                elements = webDriver.findElements(locator);
+                return (elements.size() == 0) ? true : false;
+            }
+            public String toString() {
+                return String.format("\nlist of elements: \n should be: empty\n while actual size are: %s\n", elements.size());
+            }
+        };
+    }
+
+    public static ExpectedCondition<Boolean> listOfVisibleElementsIsEmpty(final List<WebElement> elements) {
+        return new ExpectedCondition<Boolean>() {
+            private List<WebElement> visibleElements;
+
+            public Boolean apply(WebDriver webDriver) {
+                visibleElements = new ArrayList<WebElement>();
                 for (int i = 0; i < elements.size(); ++i) {
                     if (elements.get(i).isDisplayed()) {
                         visibleElements.add(i, elements.get(i));
@@ -59,11 +74,61 @@ public class CustomConditions {
         };
     }
 
+    public static ExpectedCondition<Boolean> listOfVisibleElementsIsEmpty(final By locator) {
+        return new ExpectedCondition<Boolean>() {
+            private List<WebElement> visibleElements;
+            private List<WebElement> elements;
+
+            public Boolean apply(WebDriver webDriver) {
+                elements = webDriver.findElements(locator);
+                visibleElements = new ArrayList<WebElement>();
+                for (int i = 0; i < elements.size(); ++i) {
+                    if (elements.get(i).isDisplayed()) {
+                        visibleElements.add(i, elements.get(i));
+                    }
+                }
+                return (visibleElements.size() == 0) ? true : false;
+            }
+
+            public String toString() {
+                return String.format("\nlist of elements: \n should be: empty\n while actual size are: %s\n", visibleElements.size());
+            }
+        };
+    }
+
+    public static ExpectedCondition<WebElement> listElementWithText(final By locator,
+                                                                    final String text) {
+        return new ExpectedCondition<WebElement>() {
+            private String currentText;
+            private WebElement element;
+            private List<WebElement> elements;
+
+            public WebElement apply(WebDriver webDriver) {
+                try {
+                    elements=webDriver.findElements(locator);
+                    for (int i = 0; i < elements.size(); ++i) {
+                        element = elements.get(i);
+                        currentText = element.getText();
+                        return (currentText.contains(text)) ? element : null;
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    return null;
+                }
+                return element;
+            }
+
+            public String toString() {
+                return String.format("\ntext of element should be: %s\n while actual text is: %s\n", text, currentText);
+
+            }
+        };
+    }
+
     public static ExpectedCondition<WebElement> listElementWithText(final List<WebElement> elements,
                                                                     final String text) {
         return new ExpectedCondition<WebElement>() {
             private String currentText;
-            WebElement element;
+            private WebElement element;
 
             public WebElement apply(WebDriver webDriver) {
                 try {
@@ -136,13 +201,52 @@ public class CustomConditions {
         };
     }
 
+    public static ExpectedCondition<List<WebElement>> visibleTextsOf(final By locator,
+                                                                     final String... texts) {
+        return new ExpectedCondition<List<WebElement>>() {
+            private List<String> currentTexts;
+            private List<WebElement> visibleElements;
+            private List<WebElement> elements;
+
+            public List<WebElement> apply(WebDriver webDriver) {
+                elements=webDriver.findElements(locator);
+                visibleElements = new ArrayList<WebElement>();
+                for (int i = 0; i < elements.size(); ++i) {
+                    if (elements.get(i).isDisplayed()) {
+                        visibleElements.add(elements.get(i));
+                    }
+                }
+                currentTexts = new ArrayList<String>();
+                for (int i = 0; i < visibleElements.size(); ++i) {
+                    currentTexts.add(i, visibleElements.get(i).getText());
+
+                }
+                if (currentTexts.size() != texts.length) {
+                    return null;
+                } else {
+                    for (int i = 0; i < texts.length; ++i) {
+                        if (!currentTexts.get(i).contains(texts[i])) {
+                            return null;
+                        }
+                    }
+                    return visibleElements;
+                }
+            }
+
+            public String toString() {
+                return String.format("\ntexts of visible elements list: \n should be: %s\n while actual texts are: %s\n", Arrays.toString(texts), Arrays.toString(currentTexts.toArray()));
+            }
+        };
+    }
+
     public static ExpectedCondition<List<WebElement>> visibleTextsOf(final List<WebElement> elements,
                                                                      final String... texts) {
         return new ExpectedCondition<List<WebElement>>() {
             private List<String> currentTexts;
-            List<WebElement> visibleElements;
+            private List<WebElement> visibleElements;
 
             public List<WebElement> apply(WebDriver webDriver) {
+                visibleElements = new ArrayList<WebElement>();
                 for (int i = 0; i < elements.size(); ++i) {
                     if (elements.get(i).isDisplayed()) {
                         visibleElements.add(i, elements.get(i));
