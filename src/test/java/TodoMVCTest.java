@@ -2,9 +2,9 @@ import config.BaseTest;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 
-import static pages.Base.*;
+import static pages.ToDoMVC.*;
 
-public class TodoMVCFeatureTest extends BaseTest {
+public class TodoMVCTest extends BaseTest {
 
     @Test
     public void testEdit() {

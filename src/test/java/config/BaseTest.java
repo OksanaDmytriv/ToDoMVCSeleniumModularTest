@@ -6,10 +6,9 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static core.ConciseAPI.open;
+import static core.ConciseAPI.*;
 
 public class BaseTest {
 
@@ -17,20 +16,18 @@ public class BaseTest {
         Configuration.timeout = 20;
     }
 
-   @Before
+    @Before
     public void openSite() {
         open("https://todomvc4tasj.herokuapp.com/");
     }
 
     @After
     public void clearData() {
-        if (ConciseAPI.getDriver() instanceof JavascriptExecutor) {
-            ((JavascriptExecutor) ConciseAPI.getDriver()).executeScript("localStorage.clear()");
-        }
+        executeScript("localStorage.clear()");
     }
 
     @BeforeClass
-    public static void setUp(){
+    public static void setUp() {
         ConciseAPI.setDriver(new FirefoxDriver());
     }
 

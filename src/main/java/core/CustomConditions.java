@@ -14,6 +14,25 @@ import static core.ConciseAPI.byCSS;
 
 public class CustomConditions {
 
+    public static ExpectedCondition<WebElement> listElementWithCssClass(final By elementsLocator, final String cssClass) {
+        return new ExpectedCondition<WebElement>() {
+            private WebElement element;
+            private WebElement newElement;
+
+            public WebElement apply(WebDriver webDriver) {
+                element = webDriver.findElement(elementsLocator);
+                newElement = element.findElement(byCSS(cssClass));
+                return newElement;
+            }
+
+            public String toString() {
+                return String.format("\nelement with cssClass is: %s\n", newElement);
+
+            }
+
+        };
+    }
+
     public static ExpectedCondition<Boolean> elementsIsHidden(final String cssSelector) {
         return new ExpectedCondition<Boolean>() {
             private WebElement element;
@@ -22,6 +41,7 @@ public class CustomConditions {
                 element = $(byCSS(cssSelector));
                 return (!element.isDisplayed()) ? true : false;
             }
+
             public String toString() {
                 return String.format("\n element: \n should be: hidden\n while current state is: %s\n", !element.isDisplayed());
             }
@@ -34,6 +54,7 @@ public class CustomConditions {
             public Boolean apply(WebDriver webDriver) {
                 return (elements.size() == 0) ? true : false;
             }
+
             public String toString() {
                 return String.format("\nlist of elements: \n should be: empty\n while actual size are: %s\n", elements.size());
             }
@@ -48,6 +69,7 @@ public class CustomConditions {
                 elements = webDriver.findElements(locator);
                 return (elements.size() == 0) ? true : false;
             }
+
             public String toString() {
                 return String.format("\nlist of elements: \n should be: empty\n while actual size are: %s\n", elements.size());
             }
@@ -105,7 +127,7 @@ public class CustomConditions {
 
             public WebElement apply(WebDriver webDriver) {
                 try {
-                    elements=webDriver.findElements(locator);
+                    elements = webDriver.findElements(locator);
                     for (int i = 0; i < elements.size(); ++i) {
                         element = elements.get(i);
                         currentText = element.getText();
@@ -151,7 +173,7 @@ public class CustomConditions {
     }
 
     public static ExpectedCondition<WebElement> elementHasText(final String cssSelector,
-                                                                      final String text) {
+                                                               final String text) {
         return new ExpectedCondition<WebElement>() {
             private String currentText;
             private WebElement element;
@@ -209,7 +231,7 @@ public class CustomConditions {
             private List<WebElement> elements;
 
             public List<WebElement> apply(WebDriver webDriver) {
-                elements=webDriver.findElements(locator);
+                elements = webDriver.findElements(locator);
                 visibleElements = new ArrayList<WebElement>();
                 for (int i = 0; i < elements.size(); ++i) {
                     if (elements.get(i).isDisplayed()) {

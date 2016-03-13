@@ -7,9 +7,8 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import static core.ConciseAPI.*;
 import static core.CustomConditions.*;
-import static core.Helpers.hover;
 
-public class Base {
+public class ToDoMVC {
 
     public static By tasks = byCSS("#todo-list li");
 
@@ -45,9 +44,12 @@ public class Base {
         //я не понимаю почему у меня не работает моя версия doubleclick, если оно выходит одинаково:
         //doubleClick($(listElementWithText(tasks, oldText), "label"))жж
         //просто не даблкликается
-        actions.doubleClick($(listElementWithText(tasks, oldText), "label")).perform();
-        findElementByCSS(".editing", ".edit").sendKeys(newText);
-        return findElementByCSS(".editing", ".edit");
+       /* actions.doubleClick($(listElementWithText(tasks, oldText), "label")).perform();
+        $(".editing", ".edit").sendKeys(newText);
+        return $(".editing", ".edit");*/
+
+        doubleClick($(listElementWithText(tasks, oldText), "label"));
+        return setValue($(listElementWithCssClass(tasks, "editing"), ".edit"), newText);
     }
 
     @Step
@@ -67,7 +69,7 @@ public class Base {
 
     @Step
     public static void delete(String taskText) {
-        hover($(listElementWithText(tasks, taskText), ".destroy")).click();
+        $(hover(assertThat(listElementWithText(tasks, taskText))), ".destroy").click();
     }
 
     @Step

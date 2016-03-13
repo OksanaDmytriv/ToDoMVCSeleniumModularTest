@@ -1,6 +1,7 @@
 package core;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -9,8 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class ConciseAPI {
 
@@ -43,9 +43,58 @@ public class ConciseAPI {
         return $(byCSS(cssSelector));
     }
 
+    public static WebElement $(WebElement element) {
+        return assertThat(visibilityOf(element));
+    }
+
+    public static WebElement $(ExpectedCondition<WebElement> conditionToWaitParentElement, By innerElementLocator) {
+        return $(assertThat(conditionToWaitParentElement).findElement(innerElementLocator));
+    }
+
+    public static WebElement $(ExpectedCondition<WebElement> conditionToWaitParentElement, String innerElementLocator) {
+        return $(conditionToWaitParentElement, byCSS(innerElementLocator));
+    }
+
+    public static WebElement $(WebElement parentElement, String innerElementCssSelector) {
+        return $(parentElement, byCSS(innerElementCssSelector));
+    }
+
+    public static WebElement $(WebElement parentElement, By innerElementLocator) {
+        return assertThat(visibilityOf(parentElement)).findElement(innerElementLocator);
+    }
+
+    public static WebElement $(ExpectedCondition<WebElement> conditionToWaitElement){
+        return assertThat(conditionToWaitElement);
+    }
+
+    public static WebElement $(String cssSelector1, String cssSelector2) {
+        return getDriver().findElement(byCSS(cssSelector1)).findElement(byCSS(cssSelector2));
+    }
+
+    public static WebElement $(WebElement parentElement, String... cssSelectorsOfInnerElements) {
+        assertThat(visibilityOf(parentElement));
+        for (String selector : cssSelectorsOfInnerElements) {
+           return assertThat(visibilityOf(parentElement)).findElement(byCSS(selector));
+            //.findElement(byCSS(cssSelector1));
+        }
+        return assertThat(visibilityOf(parentElement))+"."
+    }
+
     public static List<WebElement> $$(By locator) {
         return assertThat(visibilityOfAllElementsLocatedBy(locator));
     }
+
+    public static List<WebElement> $$(String cssSelector) {
+        return assertThat(visibilityOfAllElementsLocatedBy(byCSS(cssSelector)));
+    }
+
+    public static List<WebElement> $$(ExpectedCondition<List<WebElement>> conditionToWaitForListFilteredElements){
+        return assertThat(conditionToWaitForListFilteredElements);
+    }
+
+    /*public static WebElement  $$(WebElement parentElement, By innerElementsLocator){
+        return assertThat(visibilityOf(parentElement)).findElement(innerElementsLocator);
+    }*/
 
     public static By byText(String text) {
         return By.xpath("//*[text()[contains(.,'" + text + "')]]");
@@ -59,16 +108,21 @@ public class ConciseAPI {
         getDriver().get(URL);
     }
 
-    public static WebElement $(ExpectedCondition<WebElement> condition, By innerElementLocator) {
-        WebElement element = assertThat(condition);
-        return element.findElement(innerElementLocator);
+    public static WebElement hover(WebElement element) {
+        assertThat(visibilityOf(element));
+        actions.moveToElement(element).perform();
+        return element;
     }
 
-    public static WebElement $(ExpectedCondition<WebElement> condition, String innerElementLocator) {
-        return $(condition, byCSS(innerElementLocator));
+    public static WebElement doubleClick(WebElement element) {
+        assertThat(visibilityOf(element));
+        actions.doubleClick(element).perform();
+        return element;
     }
 
-    public static WebElement findElementByCSS (String cssSelector1, String cssSelector2){
-        return getDriver().findElement(byCSS(cssSelector1)).findElement(byCSS(cssSelector2));
+    public static void executeScript(String script) {
+        if (getDriver() instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) getDriver()).executeScript(script);
+        }
     }
 }
