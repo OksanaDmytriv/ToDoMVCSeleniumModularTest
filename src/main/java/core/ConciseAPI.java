@@ -63,7 +63,7 @@ public class ConciseAPI {
         return assertThat(visibilityOf(parentElement)).findElement(innerElementLocator);
     }
 
-    public static WebElement $(ExpectedCondition<WebElement> conditionToWaitElement){
+    public static WebElement $(ExpectedCondition<WebElement> conditionToWaitElement) {
         return assertThat(conditionToWaitElement);
     }
 
@@ -74,10 +74,21 @@ public class ConciseAPI {
     public static WebElement $(WebElement parentElement, String... cssSelectorsOfInnerElements) {
         assertThat(visibilityOf(parentElement));
         for (String selector : cssSelectorsOfInnerElements) {
-           return assertThat(visibilityOf(parentElement)).findElement(byCSS(selector));
-            //.findElement(byCSS(cssSelector1));
+            $(parentElement, byCSS(selector));
         }
-        return assertThat(visibilityOf(parentElement))+"."
+        return parentElement;
+    }
+
+    public static WebElement $(By locatorOfParentElement, String... cssSelectorsOfInnerElements) {
+        WebElement parentElement = assertThat(visibilityOfElementLocated(locatorOfParentElement));
+        for (String selector : cssSelectorsOfInnerElements) {
+            $(parentElement, byCSS(selector));
+        }
+        return parentElement;
+    }
+
+    public static WebElement $(String cssSelectorOfParentElement, String... cssSelectorsOfInnerElements) {
+        return $(byCSS(cssSelectorOfParentElement), cssSelectorsOfInnerElements);
     }
 
     public static List<WebElement> $$(By locator) {
@@ -88,13 +99,9 @@ public class ConciseAPI {
         return assertThat(visibilityOfAllElementsLocatedBy(byCSS(cssSelector)));
     }
 
-    public static List<WebElement> $$(ExpectedCondition<List<WebElement>> conditionToWaitForListFilteredElements){
+    public static List<WebElement> $$(ExpectedCondition<List<WebElement>> conditionToWaitForListFilteredElements) {
         return assertThat(conditionToWaitForListFilteredElements);
     }
-
-    /*public static WebElement  $$(WebElement parentElement, By innerElementsLocator){
-        return assertThat(visibilityOf(parentElement)).findElement(innerElementsLocator);
-    }*/
 
     public static By byText(String text) {
         return By.xpath("//*[text()[contains(.,'" + text + "')]]");
@@ -124,5 +131,12 @@ public class ConciseAPI {
         if (getDriver() instanceof JavascriptExecutor) {
             ((JavascriptExecutor) getDriver()).executeScript(script);
         }
+    }
+
+    public static WebElement setValue(WebElement element, String text) {
+        assertThat(visibilityOf(element));
+        element.clear();
+        element.sendKeys(text);
+        return element;
     }
 }

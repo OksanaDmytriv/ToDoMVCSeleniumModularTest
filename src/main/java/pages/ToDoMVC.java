@@ -41,10 +41,7 @@ public class ToDoMVC {
 
     @Step
     public static WebElement startEditing(String oldText, String newText) {
-        //я не понимаю почему у меня не работает моя версия doubleclick, если оно выходит одинаково:
-        //doubleClick($(listElementWithText(tasks, oldText), "label"))жж
-        //просто не даблкликается
-       /* actions.doubleClick($(listElementWithText(tasks, oldText), "label")).perform();
+       /*actions.doubleClick($(listElementWithText(tasks, oldText), "label")).perform();
         $(".editing", ".edit").sendKeys(newText);
         return $(".editing", ".edit");*/
 

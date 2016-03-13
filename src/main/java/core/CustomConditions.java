@@ -20,8 +20,8 @@ public class CustomConditions {
             private WebElement newElement;
 
             public WebElement apply(WebDriver webDriver) {
-                element = webDriver.findElement(elementsLocator);
-                newElement = element.findElement(byCSS(cssClass));
+                //element = webDriver.findElement(elementsLocator);
+                newElement = webDriver.findElement(elementsLocator).findElement(byCSS(cssClass));
                 return newElement;
             }
 
@@ -128,10 +128,12 @@ public class CustomConditions {
             public WebElement apply(WebDriver webDriver) {
                 try {
                     elements = webDriver.findElements(locator);
-                    for (int i = 0; i < elements.size(); ++i) {
+                    for (int i = 0; i < webDriver.findElements(locator).size(); ++i) {
                         element = elements.get(i);
                         currentText = element.getText();
-                        return (currentText.contains(text)) ? element : null;
+                        if (currentText.contains(text)){
+                            return element;
+                        }
                     }
                 } catch (IndexOutOfBoundsException ex) {
                     return null;
@@ -157,7 +159,9 @@ public class CustomConditions {
                     for (int i = 0; i < elements.size(); ++i) {
                         element = elements.get(i);
                         currentText = element.getText();
-                        return (currentText.contains(text)) ? element : null;
+                        if (currentText.contains(text)){
+                            return element;
+                        }
                     }
                 } catch (IndexOutOfBoundsException ex) {
                     return null;

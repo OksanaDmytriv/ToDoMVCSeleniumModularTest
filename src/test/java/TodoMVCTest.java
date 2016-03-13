@@ -9,7 +9,6 @@ public class TodoMVCTest extends BaseTest {
     @Test
     public void testEdit() {
         //given
-
         add("a");
 
         startEditing("a", "a edited").sendKeys(Keys.ENTER);
@@ -50,9 +49,7 @@ public class TodoMVCTest extends BaseTest {
         assertEmptyVisibleTasks();
 
         add("b");
-        //toggle("b") - в это месте дебагер показывает что система ищет задачу по локатору new-todo, который она выходит берет от метода add
-        // я так и не поняла как такое возможно, потому пошла в обход с помощью toggleAll
-        toggleAll();
+        toggle("b");
         assertEmptyVisibleTasks();
 
         filterCompleted();
