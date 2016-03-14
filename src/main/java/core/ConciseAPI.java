@@ -67,24 +67,20 @@ public class ConciseAPI {
         return assertThat(conditionToWaitElement);
     }
 
-    public static WebElement $(String cssSelector1, String cssSelector2) {
-        return getDriver().findElement(byCSS(cssSelector1)).findElement(byCSS(cssSelector2));
-    }
-
     public static WebElement $(WebElement parentElement, String... cssSelectorsOfInnerElements) {
         assertThat(visibilityOf(parentElement));
         for (String selector : cssSelectorsOfInnerElements) {
-            $(parentElement, byCSS(selector));
+            parentElement = $(parentElement, byCSS(selector));
         }
         return parentElement;
     }
 
     public static WebElement $(By locatorOfParentElement, String... cssSelectorsOfInnerElements) {
-        WebElement parentElement = assertThat(visibilityOfElementLocated(locatorOfParentElement));
+        WebElement element = assertThat(visibilityOfElementLocated(locatorOfParentElement));
         for (String selector : cssSelectorsOfInnerElements) {
-            $(parentElement, byCSS(selector));
+            element = $(element, byCSS(selector));
         }
-        return parentElement;
+        return element;
     }
 
     public static WebElement $(String cssSelectorOfParentElement, String... cssSelectorsOfInnerElements) {
