@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.lang.*;
 
 import static core.ConciseAPI.$;
 import static core.ConciseAPI.byCSS;
@@ -18,19 +17,24 @@ CustomConditions {
 
     public static ExpectedCondition<WebElement> listElementWithCssClass(final By elementsLocator, final String cssClass) {
         return new ExpectedCondition<WebElement>() {
-            //private WebElement element;
-            private WebElement newElement;
+            private List<WebElement> elements;
+            private WebElement element;
+            private int i;
 
             public WebElement apply(WebDriver webDriver) {
-                //element = webDriver.findElement(elementsLocator);
-                //newElement = webDriver.findElement(elementsLocator).findElement(byCSS(cssClass));
-                //return newElement;
-                newElement = $(elementsLocator, cssClass);
-                return newElement;
+                elements = webDriver.findElements(elementsLocator);
+                element = elements.get(i);
+                for (i = 0; i < elements.size(); ++i) {
+                    if (!elements.get(i).getAttribute("class").contains(cssClass)) {
+                        return null;
+                    }
+                    return element;
+                }
+                return element;
             }
 
             public String toString() {
-                return String.format("\nelement with cssClass is: %s\n", newElement);
+                return String.format("\nelement with cssClass is: %s\n", element);
 
             }
 
@@ -135,7 +139,7 @@ CustomConditions {
                     for (int i = 0; i < webDriver.findElements(locator).size(); ++i) {
                         element = elements.get(i);
                         currentText = element.getText();
-                        if (currentText.contains(text)){
+                        if (currentText.contains(text)) {
                             return element;
                         }
                     }
@@ -163,7 +167,7 @@ CustomConditions {
                     for (int i = 0; i < elements.size(); ++i) {
                         element = elements.get(i);
                         currentText = element.getText();
-                        if (currentText.contains(text)){
+                        if (currentText.contains(text)) {
                             return element;
                         }
                     }
