@@ -76,7 +76,7 @@ public class ToDoMVC {
 
     @Step
     public static void assertTasksEmpty() {
-        assertThat(listOfElementsIsEmpty(tasks));
+        assertThat(empty(tasks));
     }
 
     @Step

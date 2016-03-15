@@ -8,6 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.lang.*;
 
@@ -52,8 +53,8 @@ public class ConciseAPI {
         return $(assertThat(conditionToWaitParentElement).findElement(innerElementLocator));
     }
 
-    public static WebElement $(ExpectedCondition<WebElement> conditionToWaitParentElement, String innerElementLocator) {
-        return $(conditionToWaitParentElement, byCSS(innerElementLocator));
+    public static WebElement $(ExpectedCondition<WebElement> conditionToWaitParentElement, String innerElementCssSelector) {
+        return $(conditionToWaitParentElement, byCSS(innerElementCssSelector));
     }
 
     public static WebElement $(WebElement parentElement, String innerElementCssSelector) {
@@ -75,17 +76,14 @@ public class ConciseAPI {
     public static WebElement $(WebElement parentElement, String... cssSelectorsOfInnerElements) {
         assertThat(visibilityOf(parentElement));
         for (String selector : cssSelectorsOfInnerElements) {
-           parentElement = $(parentElement, byCSS(selector));
+            parentElement = $(parentElement, byCSS(selector));
         }
         return parentElement;
     }
 
     public static WebElement $(By locatorOfParentElement, String... cssSelectorsOfInnerElements) {
-        WebElement element = assertThat(visibilityOfElementLocated(locatorOfParentElement));
-        for (String selector : cssSelectorsOfInnerElements) {
-            element = $(element, byCSS(selector));
-        }
-        return element;
+        WebElement element = getDriver().findElement(locatorOfParentElement);
+        return $(element, cssSelectorsOfInnerElements);
     }
 
     public static WebElement $(String cssSelectorOfParentElement, String... cssSelectorsOfInnerElements) {
@@ -139,5 +137,24 @@ public class ConciseAPI {
         element.clear();
         element.sendKeys(text);
         return element;
+    }
+
+    public static List<WebElement> listOfVisibleElements(List<WebElement> elements){
+        List<WebElement>  visibleElements = new ArrayList<WebElement>();
+        for (WebElement element : elements) {
+            if (element.isDisplayed()) {
+                visibleElements.add(element);
+            }
+        }
+        return visibleElements;
+    }
+
+    public static List<String> textsOfElements(List<WebElement> elements){
+        List<String> currentTexts = new ArrayList<String>();
+        for (int i = 0; i < elements.size(); ++i) {
+            currentTexts.add(i, elements.get(i).getText());
+
+        }
+        return currentTexts;
     }
 }
