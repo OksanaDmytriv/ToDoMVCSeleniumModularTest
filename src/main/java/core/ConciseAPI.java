@@ -69,10 +69,6 @@ public class ConciseAPI {
         return assertThat(conditionToWaitElement);
     }
 
-    public static WebElement $(String cssSelector1, String cssSelector2) {
-        return getDriver().findElement(byCSS(cssSelector1)).findElement(byCSS(cssSelector2));
-    }
-
     public static WebElement $(WebElement parentElement, String... cssSelectorsOfInnerElements) {
         assertThat(visibilityOf(parentElement));
         for (String selector : cssSelectorsOfInnerElements) {
@@ -126,7 +122,7 @@ public class ConciseAPI {
         return element;
     }
 
-    public static void executeScript(String script) {
+    public static void executeJavaScript(String script) {
         if (getDriver() instanceof JavascriptExecutor) {
             ((JavascriptExecutor) getDriver()).executeScript(script);
         }

@@ -16,23 +16,23 @@ CustomConditions {
     public static ExpectedCondition<WebElement> listElementWithCssClass(final By elementsLocator, final String cssClass) {
         return new ExpectedCondition<WebElement>() {
             private List<WebElement> elements;
-            private WebElement element;
-            private int i;
+
 
             public WebElement apply(WebDriver webDriver) {
                 elements = webDriver.findElements(elementsLocator);
-                element = elements.get(i);
-                for (i = 0; i < elements.size(); ++i) {
-                    if (!elements.get(i).getAttribute("class").contains(cssClass)) {
-                        return null;
+                for (WebElement element: elements){
+                    String[] classes = element.getAttribute("class").split(" ");
+                    for(int i=0;i<classes.length;i++){
+                        if (classes[i].equals(cssClass)){
+                            return element;
+                        }
                     }
-                    return element;
                 }
-                return element;
+                return null;
             }
 
             public String toString() {
-                return String.format("\nelement with cssClass is: %s\n", element);
+                return String.format("\nThere is element with %s\n cssClass\n", cssClass);
 
             }
 

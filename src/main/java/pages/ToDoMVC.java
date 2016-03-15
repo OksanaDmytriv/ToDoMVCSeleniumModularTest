@@ -41,10 +41,6 @@ public class ToDoMVC {
 
     @Step
     public static WebElement startEditing(String oldText, String newText) {
-       /*actions.doubleClick($(listElementWithText(tasks, oldText), "label")).perform();
-        $(".editing", ".edit").sendKeys(newText);
-        return $(".editing", ".edit");*/
-
         doubleClick($(listElementWithText(tasks, oldText), "label"));
         return setValue($(listElementWithCssClass(tasks, "editing"), ".edit"), newText);
     }
