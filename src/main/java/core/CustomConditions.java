@@ -20,10 +20,10 @@ CustomConditions {
 
             public WebElement apply(WebDriver webDriver) {
                 elements = webDriver.findElements(elementsLocator);
-                for (WebElement element: elements){
+                for (WebElement element : elements) {
                     String[] classes = element.getAttribute("class").split(" ");
-                    for(int i=0;i<classes.length;i++){
-                        if (classes[i].equals(cssClass)){
+                    for (int i = 0; i < classes.length; i++) {
+                        if (classes[i].equals(cssClass)) {
                             return element;
                         }
                     }
@@ -325,7 +325,7 @@ CustomConditions {
             private List<WebElement> results;
 
             public List<WebElement> apply(WebDriver webDriver) {
-                results=webDriver.findElements(locator);
+                results = webDriver.findElements(locator);
                 visibleElements = listOfVisibleElements(results);
                 listSize = visibleElements.size();
                 return (listSize == expectedSize) ? results : null;

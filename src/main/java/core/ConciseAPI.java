@@ -135,8 +135,8 @@ public class ConciseAPI {
         return element;
     }
 
-    public static List<WebElement> listOfVisibleElements(List<WebElement> elements){
-        List<WebElement>  visibleElements = new ArrayList<WebElement>();
+    public static List<WebElement> listOfVisibleElements(List<WebElement> elements) {
+        List<WebElement> visibleElements = new ArrayList<WebElement>();
         for (WebElement element : elements) {
             if (element.isDisplayed()) {
                 visibleElements.add(element);
@@ -145,7 +145,7 @@ public class ConciseAPI {
         return visibleElements;
     }
 
-    public static List<String> textsOfElements(List<WebElement> elements){
+    public static List<String> textsOfElements(List<WebElement> elements) {
         List<String> currentTexts = new ArrayList<String>();
         for (int i = 0; i < elements.size(); ++i) {
             currentTexts.add(i, elements.get(i).getText());
