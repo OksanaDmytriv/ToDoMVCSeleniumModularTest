@@ -21,7 +21,7 @@ public class ToDoMVC {
 
     @Step
     public static void assertItemsLeft(int number) {
-       assertThat(elementHasText("#todo-count>strong", Integer.toString(number)));
+        assertThat(elementHasText("#todo-count>strong", Integer.toString(number)));
     }
 
     @Step
@@ -72,7 +72,7 @@ public class ToDoMVC {
 
     @Step
     public static void assertTasksEmpty() {
-        assertThat(listOfElementsIsEmpty(tasks));
+        assertThat(empty(tasks));
     }
 
     @Step

@@ -23,7 +23,7 @@ public class BaseTest {
 
     @After
     public void clearData() {
-        executeScript("localStorage.clear()");
+        executeJavaScript("localStorage.clear()");
     }
 
     @BeforeClass
