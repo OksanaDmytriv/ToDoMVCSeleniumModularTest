@@ -5,10 +5,10 @@ import core.ConciseAPI;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static core.ConciseAPI.*;
+import static core.ConciseAPI.executeJavaScript;
+import static core.ConciseAPI.open;
 
 public class BaseTest {
 
@@ -26,12 +26,10 @@ public class BaseTest {
         executeJavaScript("localStorage.clear()");
     }
 
-    @BeforeClass
+    @AfterClass
     public static void setUp() {
         ConciseAPI.setDriver(new FirefoxDriver());
     }
-
-    @AfterClass
     public static void teardown() {
         ConciseAPI.getDriver().quit();
     }
