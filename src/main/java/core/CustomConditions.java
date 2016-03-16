@@ -12,26 +12,6 @@ import static core.ConciseAPI.*;
 public class
 CustomConditions {
 
-    public static <V> ExpectedCondition<V> elementExceptionsCatcher(final Function<? super WebDriver, V> condition) {
-        return new ExpectedCondition<V>() {
-            public V apply(WebDriver input) {
-                try {
-                    return condition.apply(input);
-                } catch (StaleElementReferenceException e) {
-                    return null;
-                } catch (ElementNotVisibleException e) {
-                    return null;
-                } catch (IndexOutOfBoundsException e) {
-                    return null;
-                }
-            }
-
-            public String toString() {
-                return condition.toString();
-            }
-        };
-    }
-
     public static ExpectedCondition<WebElement> listElementWithCssClass(final By elementsLocator, final String cssClass) {
         return elementExceptionsCatcher(new ExpectedCondition<WebElement>() {
             private List<WebElement> elements;
@@ -120,8 +100,8 @@ CustomConditions {
         });
     }
 
-    public static ExpectedCondition<WebElement> elementHasText(final String cssSelector,
-                                                               final String text) {
+    public static ExpectedCondition<WebElement> textOf(final String cssSelector,
+                                                       final String text) {
         return elementExceptionsCatcher(new ExpectedCondition<WebElement>() {
             private String currentText;
             private WebElement element;
@@ -147,7 +127,7 @@ CustomConditions {
         return elementExceptionsCatcher(new ExpectedCondition<List<WebElement>>() {
 
             public List<WebElement> apply(WebDriver webDriver) {
-                return compareTexts(elements, texts);
+                return listHasTexts(elements, texts);
             }
 
             public String toString() {
@@ -165,7 +145,7 @@ CustomConditions {
 
             public List<WebElement> apply(WebDriver webDriver) {
                 elements = webDriver.findElements(locator);
-                return compareTexts(elements, texts);
+                return listHasTexts(elements, texts);
             }
 
             public String toString() {
@@ -186,7 +166,7 @@ CustomConditions {
             public List<WebElement> apply(WebDriver webDriver) {
                 elements = webDriver.findElements(locator);
                 visibleElements = listOfVisibleElements(elements);
-                return compareTexts(visibleElements, texts);
+                return listHasTexts(visibleElements, texts);
             }
 
             public String toString() {
@@ -205,7 +185,7 @@ CustomConditions {
 
             public List<WebElement> apply(WebDriver webDriver) {
                 visibleElements = listOfVisibleElements(elements);
-                return compareTexts(visibleElements, texts);
+                return listHasTexts(visibleElements, texts);
             }
 
             public String toString() {
@@ -326,6 +306,26 @@ CustomConditions {
 
             }
         });
+    }
+
+    public static <V> ExpectedCondition<V> elementExceptionsCatcher(final Function<? super WebDriver, V> condition) {
+        return new ExpectedCondition<V>() {
+            public V apply(WebDriver input) {
+                try {
+                    return condition.apply(input);
+                } catch (StaleElementReferenceException e) {
+                    return null;
+                } catch (ElementNotVisibleException e) {
+                    return null;
+                } catch (IndexOutOfBoundsException e) {
+                    return null;
+                }
+            }
+
+            public String toString() {
+                return condition.toString();
+            }
+        };
     }
 }
 

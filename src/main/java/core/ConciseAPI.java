@@ -57,13 +57,11 @@ public class ConciseAPI {
     }
 
     public static WebElement $(WebElement parentElement, String innerElementCssSelector) {
-        WebElement element = parentElement;
-        return $(element, byCSS(innerElementCssSelector));
+        return $(parentElement, byCSS(innerElementCssSelector));
     }
 
     public static WebElement $(WebElement parentElement, By innerElementLocator) {
-        WebElement element = parentElement;
-        return assertThat(visibilityOf(element)).findElement(innerElementLocator);
+        return assertThat(visibilityOf(parentElement)).findElement(innerElementLocator);
     }
 
     public static WebElement $(ExpectedCondition<WebElement> conditionToWaitElement) {
@@ -164,14 +162,14 @@ public class ConciseAPI {
         return null;
     }
 
-    public static List<WebElement> compareTexts(final List<WebElement> elements, final String...
-            texts) {
+    public static List<WebElement> listHasTexts(final List<WebElement> elements, final String...
+            expectedTexts) {
         List<String> currentTexts = getTexts(elements);
-        if (currentTexts.size() != texts.length) {
+        if (currentTexts.size() != expectedTexts.length) {
             return null;
         } else {
-            for (int i = 0; i < texts.length; ++i) {
-                if (!currentTexts.get(i).contains(texts[i])) {
+            for (int i = 0; i < expectedTexts.length; ++i) {
+                if (!currentTexts.get(i).contains(expectedTexts[i])) {
                     return null;
                 }
             }
