@@ -72,14 +72,14 @@ public class ConciseAPI {
         WebElement element = parentElement;
         assertThat(visibilityOf(element));
         for (String selector : cssSelectorsOfInnerElements) {
-            parentElement = $(element, byCSS(selector));
+            element = $(element, byCSS(selector));
         }
         return element;
     }
 
     public static WebElement $(By locatorOfParentElement, String... cssSelectorsOfInnerElements) {
-        WebElement element = $(locatorOfParentElement);
-        return $(element, cssSelectorsOfInnerElements);
+        //WebElement element = $(locatorOfParentElement);
+        return $($(locatorOfParentElement), cssSelectorsOfInnerElements);
     }
 
     public static WebElement $(String cssSelectorOfParentElement, String... cssSelectorsOfInnerElements) {
