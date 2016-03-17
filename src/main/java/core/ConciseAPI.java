@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,23 +17,16 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class ConciseAPI {
 
-    //private static WebDriver driver;
-
-    private static Map<Thread, WebDriver> hashmap = new HashMap<Thread, WebDriver>(4);
-
-    hashmap.put(Thread.currentThread(), new FirefoxDriver);
+    private static Map<Thread, WebDriver> drivers = new HashMap<Thread, WebDriver>();
 
     public static Actions actions;
 
     public static WebDriver getDriver() {
-        return hashmap.get(Thread.currentThread());
+        return drivers.get(Thread.currentThread());
     }
 
     public static void setDriver(WebDriver driver) {
-        for (Thread key: hashmap.keySet()){
-            Thread.currentThread();
-        }
-        //ConciseAPI.driver = driver;
+        drivers.put(Thread.currentThread(), driver);
         actions = new Actions(driver);
     }
 
@@ -187,6 +179,7 @@ public class ConciseAPI {
         }
     }
 }
+
 
 
 

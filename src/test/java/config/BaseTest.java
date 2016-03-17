@@ -1,13 +1,11 @@
 package config;
 
-import com.codeborne.selenide.Configuration;
 import core.ConciseAPI;
+import core.Configuration;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static core.ConciseAPI.executeJavaScript;
 import static core.ConciseAPI.open;
 
 public class BaseTest {
@@ -17,20 +15,13 @@ public class BaseTest {
     }
 
     @Before
-    public void openSite() {
+    public void setUp() {
+        ConciseAPI.setDriver(new FirefoxDriver());
         open("https://todomvc4tasj.herokuapp.com/");
     }
 
     @After
-    public void clearData() {
-        executeJavaScript("localStorage.clear()");
-    }
-
-    @AfterClass
-    public static void setUp() {
-        ConciseAPI.setDriver(new FirefoxDriver());
-    }
-    public static void teardown() {
+    public void teardown() {
         ConciseAPI.getDriver().quit();
     }
 }
