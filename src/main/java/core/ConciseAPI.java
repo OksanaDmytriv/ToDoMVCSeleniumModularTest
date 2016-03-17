@@ -20,9 +20,7 @@ public class ConciseAPI {
 
     //private static WebDriver driver;
 
-    private static Map<Thread, WebDriver> hashmap = new HashMap<Thread, WebDriver>(4);
-
-    hashmap.put(Thread.currentThread(), new FirefoxDriver);
+    private static Map<Thread, WebDriver> hashmap = new HashMap<Thread, WebDriver>();
 
     public static Actions actions;
 
@@ -32,7 +30,7 @@ public class ConciseAPI {
 
     public static void setDriver(WebDriver driver) {
         for (Thread key: hashmap.keySet()){
-            Thread.currentThread();
+            hashmap.put(Thread.currentThread(), new FirefoxDriver());
         }
         //ConciseAPI.driver = driver;
         actions = new Actions(driver);
