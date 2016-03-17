@@ -17,16 +17,16 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class ConciseAPI {
 
-    private static Map<Thread, WebDriver> hashmap = new HashMap<Thread, WebDriver>();
+    private static Map<Thread, WebDriver> drivers = new HashMap<Thread, WebDriver>();
 
     public static Actions actions;
 
     public static WebDriver getDriver() {
-        return hashmap.get(Thread.currentThread());
+        return drivers.get(Thread.currentThread());
     }
 
     public static void setDriver(WebDriver driver) {
-        hashmap.put(Thread.currentThread(), driver);
+        drivers.put(Thread.currentThread(), driver);
         actions = new Actions(driver);
     }
 
