@@ -19,15 +19,13 @@ public class ConciseAPI {
 
     private static Map<Thread, WebDriver> drivers = new HashMap<Thread, WebDriver>();
 
-    public static Actions actions;
-
     public static WebDriver getDriver() {
         return drivers.get(Thread.currentThread());
     }
 
     public static void setDriver(WebDriver driver) {
         drivers.put(Thread.currentThread(), driver);
-        actions = new Actions(driver);
+       // actions = new Actions(driver);
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition) {
@@ -80,8 +78,7 @@ public class ConciseAPI {
     }
 
     public static WebElement $(By locatorOfParentElement, String... cssSelectorsOfInnerElements) {
-        WebElement element = $(locatorOfParentElement);
-        return $(element, cssSelectorsOfInnerElements);
+        return $($(locatorOfParentElement), cssSelectorsOfInnerElements);
     }
 
     public static WebElement $(String cssSelectorOfParentElement, String... cssSelectorsOfInnerElements) {
@@ -113,12 +110,14 @@ public class ConciseAPI {
     }
 
     public static WebElement hover(WebElement element) {
+        Actions actions = new Actions(getDriver());
         assertThat(visibilityOf(element));
         actions.moveToElement(element).perform();
         return element;
     }
 
     public static WebElement doubleClick(WebElement element) {
+        Actions actions = new Actions(getDriver());
         assertThat(visibilityOf(element));
         actions.doubleClick(element).perform();
         return element;
