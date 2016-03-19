@@ -25,7 +25,6 @@ public class ConciseAPI {
 
     public static void setDriver(WebDriver driver) {
         drivers.put(Thread.currentThread(), driver);
-       // actions = new Actions(driver);
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition) {
@@ -72,7 +71,7 @@ public class ConciseAPI {
         WebElement element = parentElement;
         assertThat(visibilityOf(element));
         for (String selector : cssSelectorsOfInnerElements) {
-            parentElement = $(element, byCSS(selector));
+            element = $(element, byCSS(selector));
         }
         return element;
     }
